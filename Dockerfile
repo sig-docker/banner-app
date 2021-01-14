@@ -1,5 +1,4 @@
-FROM sigcorp/banner-tomcat:8.5.56-1.1
-# FROM banner-tomcat:latest
+FROM sigcorp/tomcat:8.5.61-4
 
 COPY webapps/*.war /usr/local/tomcat/webapps/
 
