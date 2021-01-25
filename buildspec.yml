@@ -16,6 +16,13 @@ phases:
       - $(aws ecr get-login --no-include-email --region $AWS_DEFAULT_REGION)
       - echo "Staging WARs ..."
       - aws s3 cp s3://${APP_BUCKET}/${APP_BUCKET_PREFIX}/${APP_NAME}/${APP_VER}/webapps/ webapps/ --recursive --include "*"
+      - mkdir -p overlay
+      - aws s3 sync s3://${APP_BUCKET}/${APP_BUCKET_PREFIX}/shared/overlay/ overlay/
+      - aws s3 sync s3://${APP_BUCKET}/${APP_BUCKET_PREFIX}/${APP_NAME}/${APP_VER}/overlay/ overlay/
+      - echo "Contents of overlay:"
+      - echo "-----------------------------------"
+      - find apps/$APP_NAME/overlay
+      - echo "-----------------------------------"
 
   build:
     commands:

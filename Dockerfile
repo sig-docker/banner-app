@@ -14,5 +14,7 @@ SHELL ["/bin/bash", "-c"]
 RUN cd /usr/local/tomcat/webapps && \
     for F in *.war; do N=$(basename $F .war); echo "Expanding $N ..."; mkdir $N; pushd $N; unzip ../$F; popd; rm -f $F; done
 
+COPY overlay/ /
+
 EXPOSE 8080
 CMD /run.sh
