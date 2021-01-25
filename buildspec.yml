@@ -21,7 +21,7 @@ phases:
       - aws s3 sync s3://${APP_BUCKET}/${APP_BUCKET_PREFIX}/${APP_NAME}/${APP_VER}/overlay/ overlay/
       - echo "Contents of overlay:"
       - echo "-----------------------------------"
-      - find apps/$APP_NAME/overlay
+      - find overlay
       - echo "-----------------------------------"
 
   build:
