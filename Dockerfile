@@ -2,7 +2,7 @@ FROM sigcorp/tomcat:latest-8-jdk8
 
 COPY webapps/*.war /usr/local/tomcat/webapps/
 
-ENV ojdbc_ver=19.3.0.0 \
+ENV ojdbc_ver=19.10.0.0 \
     ojdbc_url=https://repo1.maven.org/maven2/com/oracle/database \
     tomcat_lib=/usr/local/tomcat/lib
 
