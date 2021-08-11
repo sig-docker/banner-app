@@ -1,4 +1,4 @@
-FROM sigcorp/tomcat:8.5.61-5
+FROM sigcorp/tomcat:latest-8-jdk8
 
 COPY webapps/*.war /usr/local/tomcat/webapps/
 
