@@ -25,5 +25,6 @@ if [ -n "$BASE_IMAGE" ]; then
     sed -i "s#^FROM .*#FROM $BASE_IMAGE#" Dockerfile
 fi
 
+
 echo "before_build.sh checks passed"
 exit 0

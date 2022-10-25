@@ -1,0 +1,11 @@
+---
+saml_base_dir: /opt/saml
+
+saml_idp_metadata_path: "{{ saml_base_dir }}/IdP-Metadata.xml"
+saml_idp_metadata_mode: "0644"
+
+saml_sp_metadata_path: "{{ saml_base_dir }}/SP-Metadata.xml"
+saml_sp_metadata_mode: "0644"
+
+saml_logout_url: "{{ saml_app_base_url }}/saml/SingleLogout"
+saml_acs_url: "{{ saml_app_base_url }}/saml/SSO"

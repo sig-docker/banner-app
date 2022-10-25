@@ -1,0 +1,19 @@
+---
+- name: Create SAML base directory
+  file:
+    path: "{{ saml_base_dir }}"
+    state: directory
+
+- name: Download IdP metadata
+  get_url:
+    url: "{{ saml_idp_metadata_url }}"
+    owner: "{{ saml_idp_metadata_owner | default(omit) }}"
+    dest: "{{ saml_idp_metadata_path }}"
+    mode: "{{ saml_idp_metadata_mode }}"
+
+- name: Create SP metadata
+  template:
+    src: sp.xml
+    dest: "{{ saml_sp_metadata_path }}"
+    owner: "{{ saml_sp_metadata_owner | default(omit) }}"
+    mode: "{{ saml_sp_metadata_mode }}"
