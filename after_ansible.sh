@@ -46,6 +46,13 @@ saml_acs_url: $SAML_ACS_URL
 EOF
 
     ansible-playbook banner-app-playbook.yml -i inventory.ini || die "ansible error"
+
+    SP_META="$SAML_BASE_DIR/SP-Metadata.xml"
+    echo "--------------------------------------------------------------------------------"
+    echo "$SP_META"
+    echo "--------------------------------------------------------------------------------"
+    cat $SP_META
+    echo "--------------------------------------------------------------------------------"
 fi
 
 if env |grep -q "^GROOVY_CONF_"; then
