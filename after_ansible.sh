@@ -4,12 +4,6 @@ require () {
     [ -z "${!1}" ] && die "Missing required environment variable: ${1}"
 }
 
-dump_groovy_updates () {
-    for V in $(env |grep "^GROOVY_CONF_" |cut -d '=' -f 1); do
-        eval echo "\$$V"
-    done
-}
-
 if [ "$SAML_ENABLE" == "true" ]; then
     echo "SAML is enabled."
 
@@ -55,11 +49,13 @@ EOF
     echo "--------------------------------------------------------------------------------"
 fi
 
+python3 /parse_banner_env.py |envsubst >/opt/groovy_updates
+
 if [ -n "$DEBUG_GROOVY_CONF" ]; then
     echo "--------------------------------------------------------------------------------"
     echo "Groovy Updates"
     echo "--------------------------------------------------------------------------------"
-    dump_groovy_updates |envsubst
+    cat /opt/groovy_updates
     echo "--------------------------------------------------------------------------------"
 fi
 
@@ -69,7 +65,7 @@ if env |grep -q "^GROOVY_CONF_"; then
         echo "--------------------------------------------------------------------------------"
         echo "Updating $F"
         echo "--------------------------------------------------------------------------------"
-        dump_groovy_updates |envsubst |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
+        cat /opt/groovy_updates |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
         # TODO: Die if the above fails
         echo "--------------------------------------------------------------------------------"
         mv -f $new_groove $F || die "Error replacing $F"

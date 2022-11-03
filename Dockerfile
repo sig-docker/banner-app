@@ -13,11 +13,12 @@ RUN apt-get update -y \
 ADD ${ojdbc_url}/jdbc/ojdbc8/${ojdbc_ver}/ojdbc8-${ojdbc_ver}.jar ${tomcat_lib}/ojdbc8.jar
 ADD ${ojdbc_url}/xml/xdb/${ojdbc_ver}/xdb-${ojdbc_ver}.jar ${tomcat_lib}/xdb.jar
 ADD ${ojdbc_url}/jdbc/ucp/${ojdbc_ver}/ucp-${ojdbc_ver}.jar ${tomcat_lib}/ucp.jar
-ADD https://github.com/sigdba/groovy-conf-updater/releases/download/r4/groovy-conf-updater-r4.jar /opt/groovy-conf-updater.jar
+ADD https://github.com/sigdba/groovy-conf-updater/releases/download/r5/groovy-conf-updater-r5.jar /opt/groovy-conf-updater.jar
 
 COPY webapps/*.war /usr/local/tomcat/webapps/
 COPY ansible/ /ansible/
 COPY after_ansible.sh /run.after_ansible/
+COPY parse_banner_env.py /
 
 SHELL ["/bin/bash", "-c"]
 RUN cd /usr/local/tomcat/webapps && \
