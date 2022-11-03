@@ -55,6 +55,14 @@ EOF
     echo "--------------------------------------------------------------------------------"
 fi
 
+if [ -n "$DEBUG_GROOVY_CONF" ]; then
+    echo "--------------------------------------------------------------------------------"
+    echo "Groovy Updates"
+    echo "--------------------------------------------------------------------------------"
+    dump_groovy_updates |envsubst
+    echo "--------------------------------------------------------------------------------"
+fi
+
 if env |grep -q "^GROOVY_CONF_"; then
     for F in /usr/local/tomcat/webapps/*/WEB-INF/classes/[A-Z]*_configuration.groovy; do
         new_groove="${F}_updated"
