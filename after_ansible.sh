@@ -6,7 +6,7 @@ require () {
 
 dump_groovy_updates () {
     for V in $(env |grep "^GROOVY_CONF_" |cut -d '=' -f 1); do
-        eval echo \$$V
+        eval echo "\$$V"
     done
 }
 
