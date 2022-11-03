@@ -4,6 +4,12 @@ require () {
     [ -z "${!1}" ] && die "Missing required environment variable: ${1}"
 }
 
+dump_groovy_updates () {
+    for V in $(env |grep "^GROOVY_CONF_" |cut -d '=' -f 1); do
+        eval echo \$$V
+    done
+}
+
 if [ "$SAML_ENABLE" == "true" ]; then
     echo "SAML is enabled."
 
@@ -40,17 +46,17 @@ saml_acs_url: $SAML_ACS_URL
 EOF
 
     ansible-playbook banner-app-playbook.yml -i inventory.ini || die "ansible error"
+fi
 
-    if [ -n "$SAML_GROOVY_CONF_UPDATES" ]; then
-        for F in /usr/local/tomcat/webapps/*/WEB-INF/classes/[A-Z]*_configuration.groovy; do
-            new_groove="${F}_updated"
-            echo "--------------------------------------------------------------------------------"
-            echo "Updating $F"
-            echo "--------------------------------------------------------------------------------"
-            echo "$SAML_GROOVY_CONF_UPDATES" |envsubst |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
-            # TODO: Die if the above fails
-            echo "--------------------------------------------------------------------------------"
-            mv -f $new_groove $F || die "Error replacing $F"
-        done
-    fi
+if env |grep -q "^GROOVY_CONF_"; then
+    for F in /usr/local/tomcat/webapps/*/WEB-INF/classes/[A-Z]*_configuration.groovy; do
+        new_groove="${F}_updated"
+        echo "--------------------------------------------------------------------------------"
+        echo "Updating $F"
+        echo "--------------------------------------------------------------------------------"
+        dump_groovy_updates |envsubst |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
+        # TODO: Die if the above fails
+        echo "--------------------------------------------------------------------------------"
+        mv -f $new_groove $F || die "Error replacing $F"
+    done
 fi
