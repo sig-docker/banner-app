@@ -17,7 +17,8 @@ ADD https://github.com/sigdba/groovy-conf-updater/releases/download/r5/groovy-co
 
 COPY webapps/*.war /usr/local/tomcat/webapps/
 COPY ansible/ /ansible/
-COPY after_ansible.sh /run.after_ansible/
+COPY before_ansible.sh /run.d/banner.sh
+COPY after_ansible.sh /run.after_ansible/banner.sh
 COPY parse_banner_env.py /
 
 SHELL ["/bin/bash", "-c"]
