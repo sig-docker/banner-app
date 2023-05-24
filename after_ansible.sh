@@ -60,14 +60,23 @@ if [ -n "$DEBUG_GROOVY_CONF" ]; then
 fi
 
 if env |grep -q "^GROOVY_CONF_"; then
-    for F in /usr/local/tomcat/webapps/*/WEB-INF/classes/[A-Z]*_configuration.groovy; do
-        new_groove="${F}_updated"
-        echo "--------------------------------------------------------------------------------"
-        echo "Updating $F"
-        echo "--------------------------------------------------------------------------------"
-        cat /opt/groovy_updates |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
-        # TODO: Die if the above fails
-        echo "--------------------------------------------------------------------------------"
-        mv -f $new_groove $F || die "Error replacing $F"
+    for D in /usr/local/tomcat/webapps/*; do
+        echo "Found App: $D"
+        A=$(basename $D)
+        F=${D}/WEB-INF/classes/${A}_configuration.groovy
+        if [ -f "$F" ]; then
+            new_groove="${F}_updated"
+            echo "--------------------------------------------------------------------------------"
+            echo "Updating $F"
+            echo "--------------------------------------------------------------------------------"
+            cat /opt/groovy_updates |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
+            # TODO: Die if the above fails
+            echo "--------------------------------------------------------------------------------"
+            mv -f $new_groove $F || die "Error replacing $F"
+        else
+            echo "--------------------------------------------------------------------------------"
+            echo "No $F found"
+            echo "--------------------------------------------------------------------------------"
+        fi
     done
 fi
