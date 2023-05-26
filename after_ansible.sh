@@ -72,6 +72,10 @@ if env |grep -q "^GROOVY_CONF_"; then
             cat /opt/groovy_updates |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
             # TODO: Die if the above fails
             echo "--------------------------------------------------------------------------------"
+            if [ -n "$DEBUG_GROOVY_CONF" ]; then
+                cat $new_groove
+                echo "--------------------------------------------------------------------------------"
+            fi
             mv -f $new_groove $F || die "Error replacing $F"
         else
             echo "--------------------------------------------------------------------------------"
