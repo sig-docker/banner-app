@@ -49,7 +49,7 @@ EOF
     echo "--------------------------------------------------------------------------------"
 fi
 
-python3 /parse_banner_env.py |envsubst >/opt/groovy_updates
+python3 /parse_banner_env.py >/opt/groovy_updates
 
 if [ -n "$DEBUG_GROOVY_CONF" ]; then
     echo "--------------------------------------------------------------------------------"
@@ -62,14 +62,14 @@ fi
 if env |grep -q "^GROOVY_CONF_"; then
     for D in /usr/local/tomcat/webapps/*; do
         echo "Found App: $D"
-        A=$(basename $D)
-        F=${D}/WEB-INF/classes/${A}_configuration.groovy
+        export GROOVY_APP_NAME=$(basename $D)
+        F=${D}/WEB-INF/classes/${GROOVY_APP_NAME}_configuration.groovy
         if [ -f "$F" ]; then
             new_groove="${F}_updated"
             echo "--------------------------------------------------------------------------------"
             echo "Updating $F"
             echo "--------------------------------------------------------------------------------"
-            cat /opt/groovy_updates |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
+            cat /opt/groovy_updates |envsubst |java -jar /opt/groovy-conf-updater.jar $F >$new_groove
             # TODO: Die if the above fails
             echo "--------------------------------------------------------------------------------"
             if [ -n "$DEBUG_GROOVY_CONF" ]; then
