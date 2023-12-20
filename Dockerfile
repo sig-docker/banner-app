@@ -5,7 +5,7 @@ ENV ojdbc_ver=19.10.0.0 \
     tomcat_lib=/usr/local/tomcat/lib
 
 RUN apt-get update -y \
- && apt-get install -y gettext-base \
+ && apt-get install -y gettext-base unzip \
  && apt-get clean autoclean -y \
  && apt-get autoremove -y \
  && rm -rf /var/lib/apt/lists/*
